@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="max-w-5xl mx-auto text-center mt-8">
+    <h1 class="text-6xl text-slate-800">Hello Symfony 🚀</h1>
+
+    <div {{ react_component('FioComponent', { fullName: 'Fiorella' }) }}></div>
+</div>
+{% endblock %}
