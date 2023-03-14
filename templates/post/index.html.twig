@@ -13,6 +13,7 @@
                 {{ post.name }}
                 <a href="{{ path('app_post_show', { id: post.id }) }}">Voir</a>
                 <a href="{{ path('app_post_edit', { id: post.id }) }}">Modifier</a>
+                <a href="{{ path('app_post_delete', { id: post.id }) }}">Supprimer</a>
             </li>
         {% endfor %}
     </ul>
