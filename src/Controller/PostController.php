@@ -35,6 +35,26 @@ class PostController extends AbstractController
         ]);
     }
 
+    #[Route('/article/modifier/{id}', name: 'app_post_edit')]
+    public function edit(Post $post, Request $request, EntityManagerInterface $entityManager)
+    {
+        // $post = $entityManager->getRepository(Post::class)->find($id);
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_post');
+        }
+
+        return $this->render('post/edit.html.twig', [
+            'form' => $form,
+            'post' => $post,
+        ]);
+    }
+
     #[Route('/post/create', name: 'app_post_create')]
     public function create(EntityManagerInterface $entityManager)
     {
