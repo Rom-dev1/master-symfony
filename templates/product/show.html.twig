@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ product.name }} - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_product') }}">Retour à la liste</a>
+
+    <h1>{{ product.name }}</h1>
+{% endblock %}
