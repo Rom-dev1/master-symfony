@@ -3,16 +3,38 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     #[Route('/product/create', name: 'app_product_create')]
-    public function create(EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager)
+    {
+        $product = new Product();
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // La requête en BDD
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_product');
+        }
+
+        return $this->render('product/create.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/product/create-one', name: 'app_product_create_one')]
+    public function createOne(EntityManagerInterface $entityManager): Response
     {
         $product = new Product();
         $product->setName('Chaise');

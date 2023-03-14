@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1>Liste des produits</h1>
+    <a href="{{ path('app_product_create') }}">Créer un produit</a>
 
     <ul>
         {% for product in products %}
