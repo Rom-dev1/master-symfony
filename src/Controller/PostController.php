@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PostController extends AbstractController
 {
@@ -112,12 +114,19 @@ class PostController extends AbstractController
     }
 
     #[Route('/post', name: 'app_post')]
-    public function index(Request $request, PostRepository $repository): Response
+    public function index(Request $request, PostRepository $repository, ValidatorInterface $validator): Response
     {
         $date = $request->get('date'); // ?date=2023-10-15
 
-        // @todo Vérifier que la date est correcte
+        // OPTIONNEL Vérifier que la date est correcte
         // La passer à la vue dans le value du input
+        $errors = $validator->validate($date, [
+            new Date()
+        ]);
+
+        if (count($errors) > 0) {
+            $date = date('Y-m-d'); // 2023-03-15
+        }
 
         return $this->render('post/index.html.twig', [
             // SELECT * FROM post
@@ -125,6 +134,7 @@ class PostController extends AbstractController
             // SELECT * FROM post WHERE active = 1
             // 'posts' => $repository->findBy(['active' => true]),
             'posts' => $repository->findAllActives($date),
+            'date' => $date,
         ]);
     }
 }
