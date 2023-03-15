@@ -16,4 +16,5 @@ Attention de bien lancer le serveur MySQL ou Laragon. Et bien sûr, on peut lanc
 
 ```bash
 php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
 ```

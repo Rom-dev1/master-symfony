@@ -7,6 +7,12 @@
 {% block body %}
     <h1>Articles ({{ posts | length }})</h1>
     <a href="{{ path('app_post_new') }}">Créer un article</a>
+
+    <form method="get">
+        <input type="date" name="date" value="{{ app.request.get('date') }}">
+        <button>Filtrer</button>
+    </form>
+
     <ul>
         {% for post in posts %}
             <li>

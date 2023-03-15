@@ -112,10 +112,19 @@ class PostController extends AbstractController
     }
 
     #[Route('/post', name: 'app_post')]
-    public function index(PostRepository $repository): Response
+    public function index(Request $request, PostRepository $repository): Response
     {
+        $date = $request->get('date'); // ?date=2023-10-15
+
+        // @todo Vérifier que la date est correcte
+        // La passer à la vue dans le value du input
+
         return $this->render('post/index.html.twig', [
-            'posts' => $repository->findAll(),
+            // SELECT * FROM post
+            // 'posts' => $repository->findAll(),
+            // SELECT * FROM post WHERE active = 1
+            // 'posts' => $repository->findBy(['active' => true]),
+            'posts' => $repository->findAllActives($date),
         ]);
     }
 }
