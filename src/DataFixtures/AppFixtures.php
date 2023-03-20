@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\PostCategory;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -39,6 +40,14 @@ class AppFixtures extends Fixture
             $manager->persist($product);
         }
 
+        $postCategories = [];
+        foreach (['A', 'B', 'C'] as $letter) {
+            $category = new PostCategory();
+            $category->setTitle($letter);
+            $manager->persist($category);
+            $postCategories[] = $category;
+        }
+
         for ($i = 0; $i < 100; $i++) {
             $post = new Post();
             $post->setName($faker->sentence());
@@ -46,6 +55,7 @@ class AppFixtures extends Fixture
             $publishedAt = \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-30 days', '30 days'));
             $post->setPublishedAt($publishedAt);
             $post->setActive($faker->boolean());
+            $post->setPostCategory($faker->randomElement($postCategories));
             $manager->persist($post);
         }
 
