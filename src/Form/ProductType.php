@@ -21,6 +21,12 @@ class ProductType extends AbstractType
                 'divisor' => 100,
             ])
             ->add('image')
+            ->add('category', null, [
+                'choice_label' => 'name',
+                'placeholder' => 'Choisir une catégorie...',
+                // Pour avoir des boutons radios
+                // 'expanded' => true,
+            ])
         ;
     }
 
