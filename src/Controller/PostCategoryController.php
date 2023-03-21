@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\PostCategory;
 use App\Form\PostCategoryType;
 use App\Repository\PostCategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +36,7 @@ class PostCategoryController extends AbstractController
             return $this->redirectToRoute('app_post_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('post_category/new.html.twig', [
+        return $this->render('post_category/new.html.twig', [
             'post_category' => $postCategory,
             'form' => $form,
         ]);
@@ -60,7 +62,7 @@ class PostCategoryController extends AbstractController
             return $this->redirectToRoute('app_post_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('post_category/edit.html.twig', [
+        return $this->render('post_category/edit.html.twig', [
             'post_category' => $postCategory,
             'form' => $form,
         ]);
@@ -74,5 +76,31 @@ class PostCategoryController extends AbstractController
         }
 
         return $this->redirectToRoute('app_post_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/new/random', name: 'app_post_category_random')]
+    public function newRandom(PostCategoryRepository $repository, EntityManagerInterface $manager)
+    {
+        // On crée le post
+        $post = new Post();
+        $post->setName('Un poste');
+        $post->setContent('Un contenu');
+        $post->setPublishedAt(new \DateTimeImmutable());
+        $post->setActive(true);
+
+        // On récupère la catégorie "Catégorie 1" ou on l'a créée
+        $postCategory = $repository->findOneBy(['title' => 'Catégorie 1']);
+
+        if (! $postCategory) {
+            $postCategory = new PostCategory();
+            $postCategory->setTitle('Catégorie 1');
+            $manager->persist($postCategory);
+        }
+
+        $post->setPostCategory($postCategory);
+        $manager->persist($post);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_post_category_index');
     }
 }

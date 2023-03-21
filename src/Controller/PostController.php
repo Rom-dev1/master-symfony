@@ -45,7 +45,7 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($post);
+            // $entityManager->persist($post);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_post');
