@@ -19,6 +19,10 @@ class PostType extends AbstractType
             ->add('postCategory', null, [
                 'choice_label' => 'title',
             ])
+            ->add('tags', null, [
+                'choice_label' => 'title',
+                'expanded' => true,
+            ])
         ;
     }
 
