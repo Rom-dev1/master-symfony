@@ -18,6 +18,13 @@
         </tbody>
     </table>
 
+<<<<<<< HEAD
+=======
+    {% for post in post_category.posts %}
+        <p>{{ post.id }} {{ post.name }}</p>
+    {% endfor %}
+
+>>>>>>> 3893d2fe6a0e0fcdff3757a759844f76ce04bfdf
     <a href="{{ path('app_post_category_index') }}">back to list</a>
 
     <a href="{{ path('app_post_category_edit', {'id': post_category.id}) }}">edit</a>

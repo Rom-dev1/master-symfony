@@ -4,7 +4,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\PostCategory;
 use App\Entity\Product;
+use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -39,6 +41,22 @@ class AppFixtures extends Fixture
             $manager->persist($product);
         }
 
+        $postCategories = [];
+        foreach (['A', 'B', 'C'] as $letter) {
+            $category = new PostCategory();
+            $category->setTitle($letter);
+            $manager->persist($category);
+            $postCategories[] = $category;
+        }
+
+        $tags = [];
+        for ($i = 0; $i < 5; $i++) {
+            $tag = new Tag();
+            $tag->setTitle($faker->word());
+            $manager->persist($tag);
+            $tags[] = $tag;
+        }
+
         for ($i = 0; $i < 100; $i++) {
             $post = new Post();
             $post->setName($faker->sentence());
@@ -46,6 +64,11 @@ class AppFixtures extends Fixture
             $publishedAt = \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-30 days', '30 days'));
             $post->setPublishedAt($publishedAt);
             $post->setActive($faker->boolean());
+            $post->setPostCategory($faker->randomElement($postCategories));
+            // Ajoute entre 0 et 4 tags aléatoires au post
+            foreach (range(0, rand(0, 3)) as $index) {
+                $post->addTag($tags[array_rand($tags)]);
+            }
             $manager->persist($post);
         }
 

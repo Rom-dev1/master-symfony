@@ -16,6 +16,13 @@ class PostType extends AbstractType
             ->add('content')
             ->add('publishedAt')
             ->add('active')
+            ->add('postCategory', null, [
+                'choice_label' => 'title',
+            ])
+            ->add('tags', null, [
+                'choice_label' => 'title',
+                'expanded' => true,
+            ])
         ;
     }
 
