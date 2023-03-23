@@ -31,6 +31,9 @@ class Post
     #[ORM\Column]
     private ?bool $active = null;
 
+    #[ORM\ManyToOne(inversedBy: 'category')]
+    private ?PostCategory $categoy = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,6 +83,18 @@ class Post
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getCategoy(): ?PostCategory
+    {
+        return $this->categoy;
+    }
+
+    public function setCategoy(?PostCategory $categoy): self
+    {
+        $this->categoy = $categoy;
 
         return $this;
     }
